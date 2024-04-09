@@ -1,7 +1,7 @@
 import {PgpService} from "../pgp/pgp-service";
 import {allCharacters} from "../../character-sets/password";
 import * as openpgp from 'openpgp';
-import {ReasonForRevocation, WebStream} from 'openpgp';
+import {MaybeStream, NodeStream, ReasonForRevocation, WebStream} from 'openpgp';
 
 class PgpClient implements PgpService {
       generatePassphrase(length: number): string {
@@ -31,14 +31,14 @@ class PgpClient implements PgpService {
         await privateKey.revoke(reason,date);
         return privateKey.armor();
     }
-    async encryptMessage(messageToEncrypt: string, publicKey: string): Promise<WebStream<string>> {
+    async encryptMessage(messageToEncrypt: string, publicKey: string): Promise<MaybeStream<string>> {
         const  recipientPublicKey = await openpgp.readKey({armoredKey: publicKey});
         return await openpgp.encrypt({
                message: await openpgp.createMessage({text: messageToEncrypt}),
                encryptionKeys: recipientPublicKey
            });
         }
-    async decryptMessage(message: string, privateKey: string, passphrase: string): Promise<WebStream<string>> {
+    async decryptMessage(message: string, privateKey: string, passphrase: string): Promise<MaybeStream<string>> {
           const messageObj = await openpgp.readMessage({
               armoredMessage: message
           });
@@ -57,3 +57,5 @@ class PgpClient implements PgpService {
         }
     }
 }
+
+export {PgpClient};

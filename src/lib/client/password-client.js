@@ -36,50 +36,41 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PasswordClient = void 0;
 var password_1 = require("../../character-sets/password");
-function generatePassword() {
-    return __awaiter(this, arguments, void 0, function (length, includeSpecialCharacters, includeNumbers, includeUppercase, includeLowercase) {
-        var characters, password, i;
-        if (length === void 0) { length = 24; }
-        if (includeSpecialCharacters === void 0) { includeSpecialCharacters = true; }
-        if (includeNumbers === void 0) { includeNumbers = true; }
-        if (includeUppercase === void 0) { includeUppercase = true; }
-        if (includeLowercase === void 0) { includeLowercase = true; }
-        return __generator(this, function (_a) {
-            characters = '';
-            if (includeSpecialCharacters) {
-                characters += password_1.specialCharacters;
-            }
-            if (includeNumbers) {
-                characters += password_1.numbers;
-            }
-            if (includeUppercase) {
-                characters += password_1.upperCase;
-            }
-            if (includeLowercase) {
-                characters += password_1.lowerCase;
-            }
-            password = "";
-            for (i = 0; i < length; i++) {
-                password += characters.charAt(Math.floor(Math.random() * characters.length));
-            }
-            return [2 /*return*/, password];
+var PasswordClient = /** @class */ (function () {
+    function PasswordClient() {
+    }
+    PasswordClient.prototype.generatePassword = function () {
+        return __awaiter(this, arguments, void 0, function (length, includeSpecialCharacters, includeNumbers, includeUppercase, includeLowercase) {
+            var characters, password, i;
+            if (length === void 0) { length = 24; }
+            if (includeSpecialCharacters === void 0) { includeSpecialCharacters = true; }
+            if (includeNumbers === void 0) { includeNumbers = true; }
+            if (includeUppercase === void 0) { includeUppercase = true; }
+            if (includeLowercase === void 0) { includeLowercase = true; }
+            return __generator(this, function (_a) {
+                characters = '';
+                if (includeSpecialCharacters) {
+                    characters += password_1.specialCharacters;
+                }
+                if (includeNumbers) {
+                    characters += password_1.numbers;
+                }
+                if (includeUppercase) {
+                    characters += password_1.upperCase;
+                }
+                if (includeLowercase) {
+                    characters += password_1.lowerCase;
+                }
+                password = "";
+                for (i = 0; i < length; i++) {
+                    password += characters.charAt(Math.floor(Math.random() * characters.length));
+                }
+                return [2 /*return*/, password];
+            });
         });
-    });
-}
-function main() {
-    return __awaiter(this, void 0, void 0, function () {
-        var _a, _b;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    _b = (_a = console).log;
-                    return [4 /*yield*/, generatePassword()];
-                case 1:
-                    _b.apply(_a, [_c.sent()]);
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-main();
+    };
+    return PasswordClient;
+}());
+exports.PasswordClient = PasswordClient;
