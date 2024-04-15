@@ -36,6 +36,7 @@ export class MockAuthenticator implements Authenticator {
                 } else {
                     const payload = decoded as JwtPayload & { id: string };
                     if (payload && payload.id) {
+                        console.log(payload.id)
                         resolve(payload.id === id);
                     } else {
                         reject('Invalid token');

@@ -2,9 +2,9 @@
   "name": "rune",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon src/server.ts",
+    "start": "nodemon src/server.js",
     "compile": "npx tsc src/server.ts --esModuleInterop true",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
