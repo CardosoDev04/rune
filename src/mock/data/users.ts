@@ -5,6 +5,12 @@ export const UserList = [
         name: "Alice",
         publicKey: "public key",
         password: "password"
+    },
+    {
+        id: "2",
+        name: "Bob",
+        publicKey: "public key",
+        password: "password"
     }
 
 ]

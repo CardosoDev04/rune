@@ -7,7 +7,13 @@ const auth = new MockAuthenticator();
 
 export const resolvers = {
     Query: {
-        async users() {
+        async users(_:any, {}:any, context: any) {
+            const bearerToken = context.headers.authorization;
+            const userToken = bearerToken.split(" ")[1];
+            const isAdmin = await auth.authenticateAdmin(userToken);
+            if(!isAdmin){
+                throw new CustomError ("Unauthorized", 401);
+            }
             return await db.getAllUsers();
         },
         async messages(_: any,{id}: any, context:any){

@@ -1,6 +1,7 @@
 import {Authenticator} from "../authenticator";
 
 import {UserList} from "../../mock/data/users";
+import {AdminList} from "../../mock/data/admins";
 import jwt, {JwtPayload} from 'jsonwebtoken';
 
 const secret = "secret";
@@ -38,6 +39,23 @@ export class MockAuthenticator implements Authenticator {
                     if (payload && payload.id) {
                         console.log(payload.id)
                         resolve(payload.id === id);
+                    } else {
+                        reject('Invalid token');
+                    }
+                }
+            });
+        });
+    }
+
+    authenticateAdmin(token: string): Promise<Boolean> {
+        return new Promise((resolve, reject) => {
+            jwt.verify(token, secret, (err, decoded) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    const payload = decoded as JwtPayload & { id: string };
+                    if (payload && payload.id) {
+                        resolve(AdminList.some((admin) => admin.id === payload.id));
                     } else {
                         reject('Invalid token');
                     }
