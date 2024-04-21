@@ -3,8 +3,10 @@ import {User} from "../../classes/user";
 import {Message} from "../../classes/message";
 import {UserList} from "../data/users";
 import {Messages} from "../data/messages";
+import {PublicKeys} from "../data/publicKeys";
 
 import {MockAuthenticator} from "../../auth/mock/mockauth";
+import {PublicKey} from "../../classes/publicKey";
 
 const auth = new MockAuthenticator();
 
@@ -28,6 +30,20 @@ export class MockDB implements DBFactory {
         Messages.push({id: String(Messages.length+1), recipient_id: recipient_id, sender_id: sender_id, text: text});
         return new Promise((resolve, reject) => {
             resolve("Message sent from " + sender_id + " to " + recipient_id );
+        });
+    }
+    storePublicKey(userID: string, publicKey: string): Promise<PublicKey> {
+        return new Promise((resolve, reject) => {
+            const obj = {id: String(PublicKeys.length+1), userID: userID, publicKey: publicKey}
+            try{
+                if(!publicKey ) throw  new Error("No public key provided");
+                if(!userID) throw new Error("No user ID provided");
+                if(PublicKeys.find((key) => key.userID === userID)) throw new Error("Public key already exists");
+            PublicKeys.push(obj);
+            resolve(obj);
+            } catch (e) {
+                reject(e);
+            }
         });
     }
 }

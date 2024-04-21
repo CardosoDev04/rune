@@ -9,13 +9,12 @@ export const typeDefs = gql`
 type User {
     id: ID!
     name: String!
-    publicKey: String
 }
 
-type PGPKeyPair {
-    privateKey: String!
+type PublicKey {
+    id: ID!
+    userID: String!
     publicKey: String!
-    passphrase: String!
 }
 
 type Message {
@@ -34,8 +33,12 @@ type Query {
     login(name: String!, password: String!): Token!
     users: [User!]!
     messages(id: ID!): [Message!]!
-    sendMessage(recipient_id: ID!, sender_id: ID!, text: String!): String!
     passwords: [Password!]!
-    generatePassphrase: String!
 }
+    
+    type Mutation {
+        register(name: String!, password: String!): User!
+        sendMessage(recipient_id: ID!, sender_id: ID!, text: String!): String!
+        storePublicKey( publicKey: String!): PublicKey!
+    }
 `

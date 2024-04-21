@@ -81,4 +81,21 @@ export class MockAuthenticator implements Authenticator {
             });
         }
     }
+
+    getIDFromToken(token: string): Promise<string> {
+        return new Promise((resolve, reject) => {
+            jwt.verify(token, secret, (err, decoded) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    const payload = decoded as JwtPayload & { id: string };
+                    if (payload && payload.id) {
+                        resolve(payload.id);
+                    } else {
+                        reject('Invalid token');
+                    }
+                }
+            });
+        });
+    }
 }

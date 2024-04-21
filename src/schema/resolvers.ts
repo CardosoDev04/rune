@@ -29,6 +29,13 @@ export const resolvers = {
             checkIsAuth(isAuth);
             return await db.getAllMessagesFromUser(id)
         },
+
+        async login(_: any, {name, password}: any){
+            const token = await db.login(name, password);
+            return {token: token};
+        }
+    },
+    Mutation: {
         async sendMessage(_: any, {recipient_id, sender_id, text}: any, context: any){
             const bearerToken = context.headers.authorization;
             const userToken = bearerToken.split(" ")[1];
@@ -36,14 +43,11 @@ export const resolvers = {
             checkIsAuth(isAuth);
             return await db.sendMessage(recipient_id, sender_id, text);
         },
-
-        async login(_: any, {name, password}: any){
-            const token = await db.login(name, password);
-            return {token: token};
-        },
-
-        async generatePassphrase(_: any, {}: any, context: any){
-            return pgpClient.generatePassphrase(64)
+        async storePublicKey(_: any, {publicKey}: any,context:any){
+            const bearerToken = context.headers.authorization;
+            const userToken = bearerToken.split(" ")[1];
+            const id = await auth.getIDFromToken(userToken);
+            return await db.storePublicKey(id, publicKey);
         }
     }
 }
