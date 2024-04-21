@@ -34,6 +34,8 @@ type Query {
     login(name: String!, password: String!): Token!
     users: [User!]!
     messages(id: ID!): [Message!]!
+    sendMessage(recipient_id: ID!, sender_id: ID!, text: String!): String!
     passwords: [Password!]!
+    generatePassphrase: String!
 }
 `

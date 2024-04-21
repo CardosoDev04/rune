@@ -24,4 +24,10 @@ export class MockDB implements DBFactory {
             resolve(messages);
         });
     }
+    sendMessage(recipient_id: string, sender_id: string, text: string): Promise<String> {
+        Messages.push({id: String(Messages.length+1), recipient_id: recipient_id, sender_id: sender_id, text: text});
+        return new Promise((resolve, reject) => {
+            resolve("Message sent from " + sender_id + " to " + recipient_id );
+        });
+    }
 }
