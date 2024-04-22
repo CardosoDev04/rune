@@ -1,5 +1,5 @@
 import {Authenticator} from "../authenticator";
-
+import {hash,compare} from 'bcrypt';
 import {UserList} from "../../mock/data/users";
 import {AdminList} from "../../mock/data/admins";
 import jwt, {JwtPayload} from 'jsonwebtoken';
@@ -9,22 +9,25 @@ const secret = "secret";
 
 export class MockAuthenticator implements Authenticator {
 
-    register(username:string, password:string): Promise<void>{
+    async register(username: string, password: string): Promise<Object> {
         const user = UserList.find((user) => user.name === username);
-        if(user){
+        if (user) {
             return new Promise((resolve, reject) => {
                 reject("User already exists");
             });
         } else {
+            const hashedPassword = await hash(password, 13);
             const newUser = {
                 id: (UserList.length + 1).toString(),
                 name: username,
-                publicKey: "",
-                password: password
+                password: hashedPassword
             };
             UserList.push(newUser);
             return new Promise((resolve, reject) => {
-                resolve();
+                resolve({
+                    id: newUser.id,
+                    name: newUser.name
+                });
             });
         }
     }
@@ -64,9 +67,10 @@ export class MockAuthenticator implements Authenticator {
         });
     }
 
-    login(username: string, password: string): Promise<String> {
-        const user = UserList.find((user) => user.name === username && user.password === password);
-        if(user){
+    async login(username: string, password: string): Promise<String> {
+        const isPasswordCorrect = await compare(password, UserList.find((user) => user.name === username)?.password || '');
+        const user = UserList.find((user) => user.name === username);
+        if (user && isPasswordCorrect) {
             const payload = {
                 id: user.id,
                 name: user.name

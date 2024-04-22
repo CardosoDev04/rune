@@ -48,6 +48,9 @@ export const resolvers = {
             const userToken = bearerToken.split(" ")[1];
             const id = await auth.getIDFromToken(userToken);
             return await db.storePublicKey(id, publicKey);
+        },
+        async register(_: any, {name, password}: any){
+            return await auth.register(name, password);
         }
     }
 }
