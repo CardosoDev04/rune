@@ -4,9 +4,11 @@ import {Message} from "../../classes/message";
 import {UserList} from "../data/users";
 import {Messages} from "../data/messages";
 import {PublicKeys} from "../data/publicKeys";
+import {Passwords} from "../data/passwords";
 
 import {MockAuthenticator} from "../../auth/mock/mockauth";
 import {PublicKey} from "../../classes/publicKey";
+import {Password} from "../../classes/password";
 
 const auth = new MockAuthenticator();
 
@@ -63,5 +65,20 @@ export class MockDB implements DBFactory {
                 }
             }
         );
+    }
+
+    storePassword(userID: string, label: string, hashed_value: string): Promise<Password> {
+        return new Promise((resolve, reject) => {
+            try {
+                if (!userID) throw new Error("No user ID provided");
+                if (!label) throw new Error("No label provided");
+                if (!hashed_value) throw new Error("No hashed value provided");
+                const password: Password = {id: String(Passwords.length + 1), userID: userID, label: label, hashed_value: hashed_value}
+                Passwords.push(password);
+                resolve(password);
+            } catch (e) {
+                reject(e);
+            }
+        });
     }
 }

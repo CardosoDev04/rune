@@ -25,6 +25,7 @@ export const typeDefs = gql`
     }
 
     type Password {
+        id: ID!
         label: String!
         hashed_value: String!
     }
@@ -40,5 +41,6 @@ export const typeDefs = gql`
         register(name: String!, password: String!): User!
         sendMessage(recipient_id: ID!, sender_id: ID!, text: String!): String!
         storePublicKey( publicKey: String!): PublicKey!
+        storePassword(label: String!, hashed_value: String!): Password!
     }
 `

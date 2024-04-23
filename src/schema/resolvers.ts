@@ -54,6 +54,12 @@ export const resolvers = {
         },
         async register(_: any, {name, password}: any){
             return await auth.register(name, password);
+        },
+        async storePassword(_: any, {label, hashed_value}: any, context: any){
+            const bearerToken = context.headers.authorization;
+            const userToken = bearerToken.split(" ")[1];
+            const id = await auth.getIDFromToken(userToken);
+            return await db.storePassword(id, label, hashed_value);
         }
     }
 }
