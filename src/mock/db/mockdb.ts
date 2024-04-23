@@ -19,7 +19,7 @@ export class MockDB implements DBFactory {
     }
 
     getAllUsers(): Promise<User[]> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             resolve(UserList);
         });
     }
@@ -27,13 +27,15 @@ export class MockDB implements DBFactory {
     getAllMessagesFromUser(id: string): Promise<Message[]> {
         const messages = Messages.filter((message) => message.recipient_id === id);
         return new Promise((resolve, reject) => {
+            if(!messages) reject("No messages found");
             resolve(messages);
         });
     }
 
     sendMessage(recipient_id: string, sender_id: string, text: string): Promise<String> {
         Messages.push({id: String(Messages.length + 1), recipient_id: recipient_id, sender_id: sender_id, text: text});
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve,reject) => {
+            if(!recipient_id) reject("No recipient ID provided");
             resolve("Message sent from " + sender_id + " to " + recipient_id);
         });
     }
