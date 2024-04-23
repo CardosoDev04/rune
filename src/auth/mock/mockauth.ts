@@ -4,7 +4,7 @@ import {UserList} from "../../mock/data/users";
 import {AdminList} from "../../mock/data/admins";
 import jwt, {JwtPayload} from 'jsonwebtoken';
 
-const secret = "secret";
+const secret = "wt6uAs5uXhpJcRjoxVBouhs6b9Pdq7o93IrYlgcQqMJd9j0Pu38Noa06xoXyhR67";
 
 
 export class MockAuthenticator implements Authenticator {

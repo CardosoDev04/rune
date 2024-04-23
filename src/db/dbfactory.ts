@@ -7,4 +7,5 @@ export interface DBFactory {
     getAllMessagesFromUser(id: string): Promise<Message[]>
     sendMessage(recipient_id: string, sender_id: string, text: string): Promise<String>
     storePublicKey(userID: string, publicKey: string): Promise<PublicKey>
+    getPublicKey(id: string): Promise<PublicKey>
 }

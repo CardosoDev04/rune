@@ -33,6 +33,9 @@ export const resolvers = {
         async login(_: any, {name, password}: any){
             const token = await db.login(name, password);
             return {token: token};
+        },
+        async publicKey(_: any, {id}: any){
+            return await db.getPublicKey(id)
         }
     },
     Mutation: {
