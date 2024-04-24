@@ -1,13 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
 import {DisplayData} from "./test-components/DisplayData";
 import { createHttpLink } from "@apollo/client/link/http";
 import { concat } from '@apollo/client/link/core';
 import {setContext} from "@apollo/client/link/context";
+import {LoginPage} from "./pages/login/LoginPage";
 
 
 const handleAuthorization = setContext((_, { headers }) => {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJuYW1lIjoiQ2hhcmxlcyIsImlhdCI6MTcxMzkxNjkyMSwiZXhwIjoxNzEzOTIwNTIxfQ._6Icrq14hV37_7uSQF288Jk_UK3vNt9h_ll6zzShCyc"
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJuYW1lIjoiQ2hhcmxlcyIsImlhdCI6MTcxMzk5MzAyMiwiZXhwIjoxNzEzOTk2NjIyfQ.eGZPKQ10060t5BoGqvlzOWCj4PG3c8BkSRmvYZ-DF50"
 
     // Check if token exists (optional)
     if (!token) {
@@ -28,6 +29,15 @@ const httpLink = createHttpLink({ uri: 'http://localhost:4000/graphql' });
 const authLink = concat(handleAuthorization, httpLink);
 
 function App() {
+
+    let isDark = true;
+    useEffect(() => {
+        if(isDark) document.documentElement.classList.add('dark');
+        return () => {
+            document.documentElement.classList.remove('dark');
+        };
+    }, [isDark]);
+
     const client = new ApolloClient({
         link: authLink,
         cache: new InMemoryCache(),
@@ -36,8 +46,9 @@ function App() {
   return (
       <ApolloProvider client={client}>
     <div className="App">
-        <h1 className={"text-4xl font-semibold"}>Users:</h1>
-        <DisplayData/>
+
+        <LoginPage/>
+
     </div>
        </ApolloProvider>
   );
