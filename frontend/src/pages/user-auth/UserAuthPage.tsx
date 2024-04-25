@@ -33,9 +33,9 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
                 </div>
                 <div className={"flex flex-col"}>
                     <div
-                        className={"flex pb-2 mt-8 flex-col justify-center items-center blue-shadow dark:blue-shadow rounded-3xl bg-white dark:bg-darkComponentBg-800 w-[350px] h-[490px]"}>
+                        className={"flex pb-2 mt-8 flex-col justify-center items-center shadow-2xl dark:shadow-3xl dark:shadow-black rounded-3xl bg-white dark:bg-black w-[350px] h-[490px]"}>
                         <img src={RuneLogo} className={"flex w-[80px] h-[80px] mb-3"}/>
-                        <h1 className={"sign-in-gradient dark:sign-in-gradient bg-clip-text text-transparent font-semibold text-3xl mb-5 select-none"}>{
+                        <h1 className={"text-black dark:text-white font-semibold text-3xl mb-5 select-none"}>{
                             type === "login" ? "Sign in." : "Sign up."
 
                         }</h1>
