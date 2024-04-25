@@ -1,100 +1,102 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
 
-@layer base {
+    @layer base {
 
-    @font-face{
+        @font-face{
+            font-family: 'Inter';
+            src : url('./fonts/Inter-Thin.ttf') format('truetype');
+            font-weight: 100;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face{
+            font-family: 'Inter';
+            src : url('./fonts/Inter-ExtraLight.ttf') format('truetype');
+            font-weight: 200;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face{
+            font-family: 'Inter';
+            src : url('./fonts/Inter-Light.ttf') format('truetype');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face{
         font-family: 'Inter';
-        src : url('./fonts/Inter-Thin.ttf') format('truetype');
-        font-weight: 100;
-        font-style: normal;
-        font-display: swap;
+            src : url('./fonts/Inter-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face{
+            font-family: 'Inter';
+            src : url('./fonts/Inter-Medium.ttf') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
+
+
+        @font-face{
+            font-family: 'Inter';
+            src : url('./fonts/Inter-SemiBold.ttf') format('truetype');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face{
+            font-family: 'Inter';
+            src : url('./fonts/Inter-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face{
+            font-family: 'Inter';
+            src : url('./fonts/Inter-ExtraBold.ttf') format('truetype');
+            font-weight: 800;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face{
+            font-family: 'Inter';
+            src : url('./fonts/Inter-Black.ttf') format('truetype');
+            font-weight: 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+
+
+
     }
 
-    @font-face{
-        font-family: 'Inter';
-        src : url('./fonts/Inter-ExtraLight.ttf') format('truetype');
-        font-weight: 200;
-        font-style: normal;
-        font-display: swap;
+    .blue-shadow {
+        box-shadow: 0 0 26px 2px rgba(39, 10, 255, 0.4);
     }
 
-    @font-face{
-        font-family: 'Inter';
-        src : url('./fonts/Inter-Light.ttf') format('truetype');
-        font-weight: 300;
-        font-style: normal;
-        font-display: swap;
+    .dark-gray-shadow {
+        box-shadow: 0 0 1px 2px rgba(12, 1, 47, 0.4);
     }
+    .page-background{
+        background-image: linear-gradient(to bottom right, #FFFF, #dedede, #e5e3e3, #cacaca);
 
-    @font-face{
-    font-family: 'Inter';
-        src : url('./fonts/Inter-Regular.ttf') format('truetype');
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
     }
+    .dark {
+        .dark\:page-background {
+            background-image: linear-gradient(to bottom right, #262C4D, #1D2135, #191C2A, #212529);
+        }
 
-    @font-face{
-        font-family: 'Inter';
-        src : url('./fonts/Inter-Medium.ttf') format('truetype');
-        font-weight: 500;
-        font-style: normal;
-        font-display: swap;
     }
-
-
-
-    @font-face{
-        font-family: 'Inter';
-        src : url('./fonts/Inter-SemiBold.ttf') format('truetype');
-        font-weight: 600;
-        font-style: normal;
-        font-display: swap;
-    }
-
-    @font-face{
-        font-family: 'Inter';
-        src : url('./fonts/Inter-Bold.ttf') format('truetype');
-        font-weight: 700;
-        font-style: normal;
-        font-display: swap;
-    }
-
-    @font-face{
-        font-family: 'Inter';
-        src : url('./fonts/Inter-ExtraBold.ttf') format('truetype');
-        font-weight: 800;
-        font-style: normal;
-        font-display: swap;
-    }
-
-    @font-face{
-        font-family: 'Inter';
-        src : url('./fonts/Inter-Black.ttf') format('truetype');
-        font-weight: 900;
-        font-style: normal;
-        font-display: swap;
-    }
-
-
-
-
-}
-
-.blue-shadow {
-    box-shadow: 0 0 26px 2px rgba(39, 10, 255, 0.4);
-}
-
-.login-page-button-gradient {
-    background-image: linear-gradient(to bottom right, #4135FF, #3014FF,#4135FF,#4585FF );
-}
-
-.login-page-button-gradient:hover {
-    background-image: linear-gradient(to right, #221989, #2b1ea9, #2d1eb3, #3221cc);
-}
-
-.page-dark-background-gradient{
-    background-image: linear-gradient(to bottom right, #262C4D, #1D2135, #191C2A, #212529);
-}

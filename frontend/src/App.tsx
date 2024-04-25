@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
-import {DisplayData} from "./test-components/DisplayData";
 import { createHttpLink } from "@apollo/client/link/http";
 import { concat } from '@apollo/client/link/core';
 import {setContext} from "@apollo/client/link/context";

@@ -1,10 +1,14 @@
+import './login-button.css'
+import React from "react";
+
 type LoginPageButtonProps = {
     text: string;
+    onClick?: (event: React.MouseEvent<HTMLInputElement>) => void;
 }
 export const LoginPageButton = ({text}: LoginPageButtonProps) => {
     return (
             <button
-                className={"shadow-sm shadow-black pl-6 pr-6 pt-2 pb-2 text-center font-medium text-white text-sm items-center rounded-3xl login-page-button-gradient"}>
+                className={"flex dark-gray-shadow w-24 h-2 p-5 text-center justify-center align-middle font-medium text-white text-sm items-center rounded-3xl login-page-button-gradient"}>
                 {text}
             </button>
     )
