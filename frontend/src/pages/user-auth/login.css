@@ -1,0 +1,14 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.sign-in-gradient {
+    background-image: linear-gradient(to right, #1300a4, #10007b, #17007f, #0d0053, #000000);
+}
+
+.dark{
+    .dark\:sign-in-gradient {
+        background-image: linear-gradient(to right, #584dff, #634ffd, #8e85fb, #a6caff);
+    }
+}

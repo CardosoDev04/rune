@@ -29,6 +29,7 @@ module.exports = {
               footerDark: 'rgba(255,255,255,0.5)',
               footerLight:'rgba(79,79,79,0.5)',
               inputLabelColorDark: '#bdc4ec',
+              placeHolderLight: '#BCBCBC',
               placeHolderDark: 'rgba(255,250,250,0.4)',
               darkComponentBg: {
                 400: '#3f4672',
