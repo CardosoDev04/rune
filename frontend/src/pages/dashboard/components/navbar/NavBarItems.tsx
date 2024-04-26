@@ -1,14 +1,14 @@
 import React from "react";
-import ChatDark from "../../../assets/chat_dark.png";
-import ChatLight from "../../../assets/chat_light.png";
-import ContactsDark from "../../../assets/contacts_dark.png";
-import ContactsLight from "../../../assets/contacts_light.png";
-import PasswordsLight from "../../../assets/passwords_light.png";
-import PasswordsDark from "../../../assets/passwords_dark.png";
-import PGPLight from "../../../assets/pgp_light.png";
-import PGPDark from "../../../assets/pgp_dark.png";
-import ThreadsDark from "../../../assets/threads_dark.png";
-import ThreadsLight from "../../../assets/threads_light.png";
+import ChatDark from "../../../../assets/chat_dark.png";
+import ChatLight from "../../../../assets/chat_light.png";
+import ContactsDark from "../../../../assets/contacts_dark.png";
+import ContactsLight from "../../../../assets/contacts_light.png";
+import PasswordsLight from "../../../../assets/passwords_light.png";
+import PasswordsDark from "../../../../assets/passwords_dark.png";
+import PGPLight from "../../../../assets/pgp_light.png";
+import PGPDark from "../../../../assets/pgp_dark.png";
+import ThreadsDark from "../../../../assets/threads_dark.png";
+import ThreadsLight from "../../../../assets/threads_light.png";
 
 import Cookies from "js-cookie";
 const isDark = Cookies.get('isDark') === 'true'
