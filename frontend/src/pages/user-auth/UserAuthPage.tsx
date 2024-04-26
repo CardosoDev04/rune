@@ -60,13 +60,13 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
                         {type === "login" ?
                             <span className={"flex sign-in-gradient bg-clip-text dark:text-white text-xs mt-4 mb-5 select-none"}>Don't have an account yet?
                         <Link to="/register"
-                              className={"flex text-runeBlue-500 select-none hover:text-runeBlue-700 cursor-pointer ml-1"}>
+                              className={"flex text-runeBlue-500 dark:to-runeBlue-100 select-none hover:text-runeBlue-700 cursor-pointer ml-1"}>
                             Sign up.
                         </Link>
                     </span> :
                             <span className={"flex sign-in-gradient bg-clip-text dark:text-white text-xs mt-4 mb-5 select-none"}>Already have an account?
                         <Link to="/login"
-                              className={"flex text-runeBlue-500 select-none hover:text-runeBlue-700 cursor-pointer ml-1"}>
+                              className={"flex text-runeBlue-500 dark:to-runeBlue-100 select-none hover:text-runeBlue-700 cursor-pointer ml-1"}>
                             Sign in.
                         </Link>
                     </span>
