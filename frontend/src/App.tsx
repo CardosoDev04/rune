@@ -1,14 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
-import { createHttpLink } from "@apollo/client/link/http";
-import { concat } from '@apollo/client/link/core';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
+import {ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client';
+import {createHttpLink} from "@apollo/client/link/http";
+import {concat} from '@apollo/client/link/core';
 import {setContext} from "@apollo/client/link/context";
-import { UserAuthPage} from "./pages/user-auth/UserAuthPage";
-import {createBrowserRouter, RouterProvider } from "react-router-dom";
+import {UserAuthPage} from "./pages/user-auth/UserAuthPage";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {NotFound} from "./pages/404/NotFound";
-import {DarkModeToggle} from "./general-components/DarkModeToggle";
-
-
+import {Dashboard} from "./pages/dashboard/Dashboard";
+import Cookies from 'js-cookie';
 
 
 const handleAuthorization = setContext((_, { headers }) => {
@@ -46,23 +45,38 @@ const router = createBrowserRouter([
     {
         path: '/register',
         element: <UserAuthPage type={"register"}/>
+    },
+    {
+        path: '/dashboard',
+        element: <Dashboard/>
     }
 ]);
+
 export const DarkModeContext = React.createContext({
     isDark: false,
     toggleDarkMode: () => {},
 });
 
+
 function App() {
 
 
-    const[isDark,setIsDark] = useState(false);
+    const [isDark, setIsDark] = useState(() => {
+        const saved = Cookies.get('isDark');
+        return saved ? JSON.parse(saved) : true;
+    });
     useEffect(() => {
+        Cookies.set('isDark', JSON.stringify(isDark));
+    }, [isDark]);
+
+    useLayoutEffect(() => {
         if(isDark) document.documentElement.classList.add('dark');
         return () => {
             document.documentElement.classList.remove('dark');
         };
     }, [isDark]);
+
+
 
     function toggleDarkMode(){
         console.log("Toggling dark mode...");
