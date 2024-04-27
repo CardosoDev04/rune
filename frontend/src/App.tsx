@@ -48,7 +48,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <Dashboard/>
+        element: <Dashboard />
     }
 ]);
 
@@ -66,7 +66,7 @@ function App() {
         return saved ? JSON.parse(saved) : true;
     });
     useEffect(() => {
-        Cookies.set('isDark', JSON.stringify(isDark));
+        Cookies.set('isDark', JSON.stringify(isDark), { expires: 365 });
     }, [isDark]);
 
     useLayoutEffect(() => {

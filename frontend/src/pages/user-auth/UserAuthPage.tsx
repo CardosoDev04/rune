@@ -28,9 +28,6 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
 
             <div
                 className={"flex flex-row h-screen w-screen justify-center items-center align-middle page-background dark:page-background"}>
-                <div className={"absolute top-0 right-0 z-50 m-2"}>
-                    <DarkModeToggle/>
-                </div>
                 <div className={"flex flex-col"}>
                     <div
                         className={"flex pb-2 mt-8 flex-col justify-center items-center shadow-2xl dark:shadow-3xl dark:shadow-black rounded-3xl bg-white dark:bg-black w-[350px] h-[490px]"}>

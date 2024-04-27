@@ -3,14 +3,18 @@ import SearchDark from "../../../../assets/search_dark.png";
 import SearchLight from "../../../../assets/search_light.png";
 
 import Cookies from "js-cookie";
-const isDark = Cookies.get('isDark') === 'true'
 
-const searchIcon = isDark ? SearchDark : SearchLight;
-export const SearchBar = () => {
+
+type SearchbarProps = {
+    isDark: boolean;
+
+}
+export const SearchBar = ({isDark}: SearchbarProps) => {
+    const searchIcon = isDark ? SearchDark : SearchLight;
     return (
         <>
-            <div className={"flex flex-row bg-darkComponentBg-900 h-9 rounded-sm border-opacity-50 border border-white"}>
-                <input placeholder={"Search..."} className={"text-black dark:text-white bg-darkComponentBg-900 input-with-image"} style={{
+            <div className={"flex flex-row bg-gray-400 dark:bg-darkComponentBg-900 h-9 rounded-sm border-opacity-50 border border-white"}>
+                <input placeholder={"Search..."} className={"text-black placeholder:text-black dark:placeholder:text-white dark:text-white bg-gray-300 dark:bg-darkComponentBg-900 input-with-image"} style={{
                     backgroundImage: `url(${searchIcon})`,
                     backgroundSize: '25px',
                     backgroundPosition: '5px 50%',
