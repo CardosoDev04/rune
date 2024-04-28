@@ -59,7 +59,7 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
         console.log(errorMessage)
         setTimeout(() => {
             setErrorMessage("")
-        },2000)
+        },4000)
     }
 
     const handleRegister = async () => {
@@ -75,7 +75,7 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
             const data = response.data
 
             if(data && data.register && data.register.token){
-                Cookies.set("userToken", data.register.token)
+                localStorage.setItem("userToken", data.register.token)
                 navigate("/dashboard")
             }
 
@@ -97,12 +97,13 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
                     password: password
                 }
             });
-
-            console.log (response)
             const data = response.data
 
             if(data && data.login.token){
-                Cookies.set("userToken", data.login.token)
+                localStorage.setItem("userToken", data.login.token)
+
+                console.log(`Login: Set token to ${data.login.token}`);
+
                 navigate("/dashboard")
             }
 
@@ -112,7 +113,7 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
 
             if(response.error){
                 console.log(response.error.message)
-                throw new Error (response.error.message)
+                new Error (response.error.message)
             }
 
             if(loginLoading){
@@ -155,7 +156,7 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
                         }
                         />
                         </div>
-                        <div className={"flex mt-2 items-center text-red-500 text-md"}>{errorMessage}</div>
+                        <div className={"flex mt-2 items-center text-center text-red-500 text-sm"}>{errorMessage}</div>
                         {type === "login" ?
                             <span className={"flex sign-in-gradient bg-clip-text dark:text-white text-xs mt-4 mb-5 select-none"}>Don't have an account yet?
                         <Link to="/register"

@@ -57,6 +57,7 @@ export class MockAuthenticator implements Authenticator {
             };
             const token = jwt.sign(payload, secret, {expiresIn: '1h'});
             return new Promise((resolve, reject) => {
+                console.log(token)
                 resolve(token);
             });
         } else {
@@ -95,6 +96,7 @@ export class MockAuthenticator implements Authenticator {
                 console.log(newUser.password)
                 UserList.push(newUser);
                 const token = await this.login(username, password);
+                console.log("User registration token: " + token);
                 return new Promise((resolve, reject) => {
                     resolve({
                         token: token

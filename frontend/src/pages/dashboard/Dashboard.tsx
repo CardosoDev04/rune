@@ -1,18 +1,70 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import './dashboard.css'
 import RuneLogoWhite from '../../assets/Rune_Logo_white.png'
 import RuneLogoBlack from '../../assets/Rune_Logo_black.png'
-import Cookies from "js-cookie";
+import Cookies, {set} from "js-cookie";
 import {NavBarItems} from "./components/navbar/NavBarItems";
 import {SearchBar} from "./components/search/SearchBar";
 import {CardGrid} from "./components/card-grid/CardGrid";
 import {DarkModeToggle} from "../../general-components/DarkModeToggle";
 import {DarkModeContext} from "../../App";
 import {UserAvatar} from "./components/user-avatar/UserAvatar";
+import {gql, useLazyQuery, useQuery} from "@apollo/client";
+import {setContext} from "@apollo/client/link/context";
 
 
+const USER_INFO_QUERY = gql`
+    query User{
+        user{
+            name
+        }
+    }
+`
 
 export const Dashboard = () => {
+
+    const handleAuthorization = setContext((_, { headers }) => {
+        const token = localStorage.getItem("userToken");
+
+        if (!token) {
+            console.error("Missing bearer token, it may be that the user is not logged in");
+
+            return { headers };
+        }
+
+        return {
+            headers: {
+                ...headers,
+                Authorization: `Bearer ${token}`
+            }
+        };
+    });
+
+    const [getInfo, {data, loading,error }] = useLazyQuery<
+        {name: string}
+    >(USER_INFO_QUERY);
+
+    const [username, setUsername] = useState<string>("")
+
+    useEffect(() => {
+            getName().then(() => console.log("Username fetched"))
+    }, []);
+
+    async function getName(){
+        const response = await getInfo();
+        console.log(response)
+        if(loading){
+            console.log("Loading...")
+        }
+        if(error){
+            console.log(error)
+            return "Error fetching username"
+        }
+        if(response && data && data.name){
+           setUsername(data.name)
+        }
+    }
+
     const { isDark, toggleDarkMode } = useContext(DarkModeContext);
     const runeLogo = <img alt="rune logo" src={isDark ? RuneLogoWhite : RuneLogoBlack} className={"h-10 w-10"}/>
     return (
@@ -47,7 +99,7 @@ export const Dashboard = () => {
                         </div>
                         <div className={"mt-5 opacity-30 border border-black dark:border-white w-full"}></div>
                         <div id={"grid"} className={"flex justify-center h-full w-full"}>
-                            <CardGrid username={"m0lly"} timeSinceLastLogin={"30min"} alertCount={12} userData={
+                            <CardGrid username={username} timeSinceLastLogin={"30min"} alertCount={12} userData={
                                 {
                                     "Chats" : 12,
                                     "Contacts": 16,

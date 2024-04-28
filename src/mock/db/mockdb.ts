@@ -32,7 +32,6 @@ export class MockDB implements DBFactory {
             }else {
                 resolve(user);
             }
-
         });
     }
 
@@ -56,9 +55,9 @@ export class MockDB implements DBFactory {
         return new Promise((resolve, reject) => {
             const obj = {id: String(PublicKeys.length + 1), userID: userID, publicKey: publicKey}
             try {
-                if (!publicKey) throw new Error("No public key provided");
-                if (!userID) throw new Error("No user ID provided");
-                if (PublicKeys.find((key) => key.userID === userID)) throw new Error("Public key already exists");
+                if (!publicKey)  new Error("No public key provided");
+                if (!userID)  new Error("No user ID provided");
+                if (PublicKeys.find((key) => key.userID === userID)) new Error("Public key already exists");
                 PublicKeys.push(obj);
                 resolve(obj);
             } catch (e) {
@@ -70,10 +69,11 @@ export class MockDB implements DBFactory {
     getPublicKey(id: string): Promise<PublicKey> {
         return new Promise((resolve, reject) => {
                 try {
-                    if (!id) throw new Error("No id provided");
+                    if (!id)  new Error("No id provided");
                     const key = PublicKeys.find((key) => key.userID === id);
-                    if (!key) throw new Error("No public key found");
-                    resolve(key);
+                    if (!key) { new Error("No public key found")} else {
+                        resolve(key);
+                    }
                 } catch (e) {
                     reject(e);
                 }
@@ -84,9 +84,9 @@ export class MockDB implements DBFactory {
     storePassword(userID: string, label: string, hashed_value: string): Promise<Password> {
         return new Promise((resolve, reject) => {
             try {
-                if (!userID) throw new Error("No user ID provided");
-                if (!label) throw new Error("No label provided");
-                if (!hashed_value) throw new Error("No hashed value provided");
+                if (!userID) new Error("No user ID provided");
+                if (!label) new Error("No label provided");
+                if (!hashed_value) new Error("No hashed value provided");
                 const password: Password = {id: String(Passwords.length + 1), userID: userID, label: label, hashed_value: hashed_value}
                 Passwords.push(password);
                 resolve(password);

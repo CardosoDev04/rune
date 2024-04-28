@@ -33,7 +33,7 @@ export const typeDefs = gql`
     type Query {
         login(name: String!, password: String!): Token!
         users: [User!]!
-        user(id: ID!): User!
+        user: User!
         messages(id: ID!): [Message!]!
         publicKey(id: ID!): PublicKey!
     }

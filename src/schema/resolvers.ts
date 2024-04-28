@@ -37,14 +37,12 @@ export const resolvers = {
         async publicKey(_: any, {id}: any){
             return await db.getPublicKey(id)
         },
-        async user(_: any, {id}: any, context:any){
+        async user(_: any, {}: any, context:any){
             const bearerToken = context.headers.authorization;
             const userToken = bearerToken.split(" ")[1];
-            const isAuth = await auth.authenticate(userToken,id);
-            checkIsAuth(isAuth);
-            return await db.getAllUsers().then((users) => {
-                return users.find((user) => user.id === id);
-            });
+            console.log("User query token: " + userToken);
+            const id = await auth.getIDFromToken(userToken);
+            return await db.getUser(id);
         }
     },
     Mutation: {
