@@ -4,24 +4,79 @@ import {Input} from "./components/input/Input";
 import RuneLogo from '../../assets/Rune_Logo.png'
 import {FooterNote} from "../../general-components/FooterNote";
 import './login.css'
-import {Link} from "react-router-dom";
-import {DarkModeToggle} from "../../general-components/DarkModeToggle";
+import {Link,useNavigate} from "react-router-dom";
+import {useQuery, gql, useMutation} from "@apollo/client";
+import Cookies from "js-cookie";
+
+const REGISTER_MUTATION = gql`
+    mutation Register($name: String!, $password: String!){
+        register(name: $name, password: $password){
+            token
+        }
+    }
+`
+
+const LOGIN_QUERY = gql`
+    query Login($name: String!, $password: String!){
+        login(name: $name, password: $password){
+            token
+        }
+    }
+`
 
 type UserAuthPageProps = {
     type: string;
-
 }
 export const UserAuthPage = ({type}: UserAuthPageProps) => {
+
+    const [errorMessage, setErrorMessage] = useState<string>("")
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
 
-    function handleLogin(){
-        console.log("Logging in...")
-    }
-    function handleRegister(){
-        console.log("Registering...")
+    const [register, { data, loading, error }] = useMutation<
+        { register: { token: string } },
+        { name: string; password: string }
+    >(REGISTER_MUTATION);
+
+    const navigate = useNavigate();
+
+    const handleRegister = async () => {
+        try{
+            const response = await register({
+                variables: {
+                    name: username,
+                    password: password
+                }
+            });
+
+
+            const data = response.data
+
+            if(data && data.register && data.register.token){
+                Cookies.set("userToken", data.register.token)
+                navigate("/dashboard")
+            }
+
+            if(loading){
+                console.log("Registering...")
+            }
+
+
+        }catch(e) {
+            console.log(e)
+            if( e instanceof Error){
+            setErrorMessage(e.message.split(":")[1].replace(/"/g,""))
+            console.log(errorMessage)
+            setTimeout(() => {
+                setErrorMessage("")
+            },10000)
+        }
+        }
     }
 
+    const handleLogin = async () => {
+
+    }
 
     return (
         <>
@@ -47,13 +102,13 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
                                placeholder={"Enter your password"}
                                label={"Password"} type={"password"}
                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}/>
-
+                        <div onClick={type === "login" ? handleLogin : handleRegister}>
                         <AuthPageButton text={
                             type === "login" ? "Login" : "Register"
                         }
-                                        onClick={type === "login" ? handleLogin : handleRegister}
                         />
-
+                        </div>
+                        <div className={"flex mt-2 items-center text-red-500 text-md"}>{errorMessage}</div>
                         {type === "login" ?
                             <span className={"flex sign-in-gradient bg-clip-text dark:text-white text-xs mt-4 mb-5 select-none"}>Don't have an account yet?
                         <Link to="/register"

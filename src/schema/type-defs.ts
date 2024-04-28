@@ -33,12 +33,13 @@ export const typeDefs = gql`
     type Query {
         login(name: String!, password: String!): Token!
         users: [User!]!
+        user(id: ID!): User!
         messages(id: ID!): [Message!]!
         publicKey(id: ID!): PublicKey!
     }
 
     type Mutation {
-        register(name: String!, password: String!): User!
+        register(name: String!, password: String!): Token!
         sendMessage(recipient_id: ID!, sender_id: ID!, text: String!): String!
         storePublicKey( publicKey: String!): PublicKey!
         storePassword(label: String!, hashed_value: String!): Password!

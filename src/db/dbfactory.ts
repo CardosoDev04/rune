@@ -6,6 +6,7 @@ import {Password} from "../classes/password";
 export interface DBFactory {
     login(username: string, password: string): Promise<String>
     getAllUsers(): Promise<User[]>
+    getUser(id: string): Promise<User>
     getAllMessagesFromUser(id: string): Promise<Message[]>
     sendMessage(recipient_id: string, sender_id: string, text: string): Promise<String>
     storePublicKey(userID: string, publicKey: string): Promise<PublicKey>

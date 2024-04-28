@@ -31,8 +31,11 @@ export const Dashboard = () => {
                                 <NavBarItems isDark={isDark}/>
                                 <div className={"flex mt-36 ml-5"}>
                                 <DarkModeToggle/>
+                                    <div className={"mb-5"}>
                                     <UserAvatar username={"m0lly"}/>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                         <div className={"ml-32 opacity-30 border border-black dark:border-white h-full"}></div>

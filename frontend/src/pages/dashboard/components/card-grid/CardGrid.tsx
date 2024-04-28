@@ -75,7 +75,7 @@ export const CardGrid = ({username,timeSinceLastLogin,alertCount,userData,isDark
                 </div>
             {
                 cardData.map((card) => {
-                    return <div className={"w-72 h-48 m-10 rounded-xl border border-black hover:bg-gray-200 dark:hover:bg-darkComponentBg-800 cursor-pointer dark:bg-darkComponentBg-900 dark:border-white "}>
+                    return <div key={card.title.toLowerCase()} className={"w-72 h-48 m-10 rounded-xl border border-black hover:bg-gray-200 dark:hover:bg-darkComponentBg-800 cursor-pointer dark:bg-darkComponentBg-900 dark:border-white "}>
                         <h1 className={"flex mt-5 ml-5 text-black dark:text-white font-semibold text-2xl select-none"}>{card.title}</h1>
                         <p className={"flex mt-3 ml-5 mr-3 text-black text-sm opacity-50 dark:text-white text-left select-none"}>{card.text}</p>
                         <div className={"flex flex-row align-middle items-center justify-start"}>

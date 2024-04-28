@@ -24,6 +24,18 @@ export class MockDB implements DBFactory {
         });
     }
 
+    getUser(id: string): Promise<User> {
+        return new Promise((resolve, reject) => {
+            const user = UserList.find((user) => user.id === id);
+            if(!user){
+                reject("No user found")
+            }else {
+                resolve(user);
+            }
+
+        });
+    }
+
     getAllMessagesFromUser(id: string): Promise<Message[]> {
         const messages = Messages.filter((message) => message.recipient_id === id);
         return new Promise((resolve, reject) => {
