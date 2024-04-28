@@ -3,7 +3,7 @@ import {hash,compare} from 'bcrypt';
 import {UserList} from "../../mock/data/users";
 import {AdminList} from "../../mock/data/admins";
 import jwt, {JwtPayload} from 'jsonwebtoken';
-import {MockDB} from "../../mock/db/mockdb";
+import {specialCharacters} from "../../character-sets/password";
 
 const secret = "wt6uAs5uXhpJcRjoxVBouhs6b9Pdq7o93IrYlgcQqMJd9j0Pu38Noa06xoXyhR67";
 
@@ -73,6 +73,13 @@ export class MockAuthenticator implements Authenticator {
                 reject("Invalid username or password");
             });
         } else{
+            const characterRegex = new RegExp(`[${specialCharacters}]`);
+            const numberRegex = new RegExp(`[0-9]`);
+            if(password.length <8 ||  !characterRegex.test(password) || !numberRegex.test(password)){
+                return new Promise(( resolve, reject) => {
+                    reject("Password must be at least 8 characters long and contain at least one number and one special character");
+                });
+            }
             const user = UserList.find((user) => user.name === username);
             if (user) {
                 return new Promise((resolve, reject) => {
@@ -85,6 +92,7 @@ export class MockAuthenticator implements Authenticator {
                     name: username,
                     password: hashedPassword
                 };
+                console.log(newUser.password)
                 UserList.push(newUser);
                 const token = await this.login(username, password);
                 return new Promise((resolve, reject) => {

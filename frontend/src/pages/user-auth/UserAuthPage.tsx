@@ -5,8 +5,11 @@ import RuneLogo from '../../assets/Rune_Logo.png'
 import {FooterNote} from "../../general-components/FooterNote";
 import './login.css'
 import {Link,useNavigate} from "react-router-dom";
-import {useQuery, gql, useMutation} from "@apollo/client";
+import { gql, useMutation, useLazyQuery} from "@apollo/client";
 import Cookies from "js-cookie";
+
+
+
 
 const REGISTER_MUTATION = gql`
     mutation Register($name: String!, $password: String!){
@@ -33,12 +36,31 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
 
-    const [register, { data, loading, error }] = useMutation<
+    const [register, { data, loading }] = useMutation<
         { register: { token: string } },
         { name: string; password: string }
     >(REGISTER_MUTATION);
 
+    const [login, {data: loginData, loading: loginLoading,error }] = useLazyQuery<
+        {login:{token: string}},
+        {name: string; password: string}
+    >(LOGIN_QUERY);
+
     const navigate = useNavigate();
+
+    const catchError = (e: Error) => {
+        let message = e.message.split(":")[1].replace(/"/g,"")
+        console.log(message)
+        if(!message){
+            message = "Internal error, please try again." }
+        else {
+        setErrorMessage(message)
+        }
+        console.log(errorMessage)
+        setTimeout(() => {
+            setErrorMessage("")
+        },2000)
+    }
 
     const handleRegister = async () => {
         try{
@@ -63,19 +85,44 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
 
 
         }catch(e) {
-            console.log(e)
-            if( e instanceof Error){
-            setErrorMessage(e.message.split(":")[1].replace(/"/g,""))
-            console.log(errorMessage)
-            setTimeout(() => {
-                setErrorMessage("")
-            },10000)
-        }
+            if(e instanceof Error) catchError(e);
         }
     }
 
     const handleLogin = async () => {
+        try{
+            const response = await login({
+                variables: {
+                    name: username,
+                    password: password
+                }
+            });
 
+            console.log (response)
+            const data = response.data
+
+            if(data && data.login.token){
+                Cookies.set("userToken", data.login.token)
+                navigate("/dashboard")
+            }
+
+            if(!data){
+               console.log("Failed to sign-in.")
+            }
+
+            if(response.error){
+                console.log(response.error.message)
+                throw new Error (response.error.message)
+            }
+
+            if(loginLoading){
+                console.log("Logging in...")
+            }
+
+
+        } catch(e) {
+            if(e instanceof Error) catchError(e);
+        }
     }
 
     return (
@@ -86,7 +133,7 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
                 <div className={"flex flex-col"}>
                     <div
                         className={"flex pb-2 mt-8 flex-col justify-center items-center shadow-2xl dark:shadow-3xl dark:shadow-black rounded-3xl bg-white dark:bg-black w-[350px] h-[490px]"}>
-                        <img src={RuneLogo} className={"flex w-[80px] h-[80px] mb-3"}/>
+                        <img src={RuneLogo} alt={"rune"} className={"flex w-[80px] h-[80px] mb-3"}/>
                         <h1 className={"text-black dark:text-white font-semibold text-3xl mb-5 select-none"}>{
                             type === "login" ? "Sign in." : "Sign up."
 
