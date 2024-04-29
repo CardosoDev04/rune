@@ -11,7 +11,7 @@ import Cookies from 'js-cookie';
 
 
 const handleAuthorization = setContext((_, { headers }) => {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJuYW1lIjoiQ2hhcmxlcyIsImlhdCI6MTcxMzk5MzAyMiwiZXhwIjoxNzEzOTk2NjIyfQ.eGZPKQ10060t5BoGqvlzOWCj4PG3c8BkSRmvYZ-DF50"
+    const token = localStorage.getItem("userToken")
 
     // Check if token exists (optional)
     if (!token) {
@@ -30,6 +30,8 @@ const handleAuthorization = setContext((_, { headers }) => {
 
 const httpLink = createHttpLink({ uri: 'http://localhost:4000/graphql' });
 const authLink = concat(handleAuthorization, httpLink);
+
+
 
 
 const router = createBrowserRouter([

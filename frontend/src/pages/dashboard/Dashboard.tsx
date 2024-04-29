@@ -21,27 +21,13 @@ const USER_INFO_QUERY = gql`
     }
 `
 
+
 export const Dashboard = () => {
 
-    const handleAuthorization = setContext((_, { headers }) => {
-        const token = localStorage.getItem("userToken");
-
-        if (!token) {
-            console.error("Missing bearer token, it may be that the user is not logged in");
-
-            return { headers };
-        }
-
-        return {
-            headers: {
-                ...headers,
-                Authorization: `Bearer ${token}`
-            }
-        };
-    });
-
     const [getInfo, {data, loading,error }] = useLazyQuery<
-        {name: string}
+        {user: {
+            name:string
+            }}
     >(USER_INFO_QUERY);
 
     const [username, setUsername] = useState<string>("")
@@ -52,7 +38,6 @@ export const Dashboard = () => {
 
     async function getName(){
         const response = await getInfo();
-        console.log(response)
         if(loading){
             console.log("Loading...")
         }
@@ -60,8 +45,8 @@ export const Dashboard = () => {
             console.log(error)
             return "Error fetching username"
         }
-        if(response && data && data.name){
-           setUsername(data.name)
+        if(response && response.data){
+           setUsername(response.data.user.name)
         }
     }
 
