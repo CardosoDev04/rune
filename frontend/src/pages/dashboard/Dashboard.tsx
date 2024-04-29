@@ -11,6 +11,7 @@ import {DarkModeContext} from "../../App";
 import {UserAvatar} from "./components/user-avatar/UserAvatar";
 import {gql, useLazyQuery, useQuery} from "@apollo/client";
 import {setContext} from "@apollo/client/link/context";
+import {useNavigate} from "react-router-dom";
 
 
 const USER_INFO_QUERY = gql`
@@ -52,9 +53,12 @@ export const Dashboard = () => {
 
     const { isDark, toggleDarkMode } = useContext(DarkModeContext);
     const runeLogo = <img alt="rune logo" src={isDark ? RuneLogoWhite : RuneLogoBlack} className={"h-10 w-10"}/>
+
+    const navigate = useNavigate();
     return (
         <>
-            <div
+            {!username && navigate("/login")}
+            { username && <div
                 className={"flex flex-row h-screen w-screen justify-center items-center align-middle page-background dark:page-background"}>
                 <div id={"black-box"}
                      className={"shadow-md shadow-black flex flex-row justify-between rounded-2xl bg-white dark:bg-black w-11/12 h-5/6"}>
@@ -98,7 +102,8 @@ export const Dashboard = () => {
 
 
                 </div>
-            </div>
+            </div> }
+
         </>
     );
 };
