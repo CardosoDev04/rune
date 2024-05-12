@@ -55,11 +55,12 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
             message = "Internal error, please try again." }
         else {
         setErrorMessage(message)
+            console.log("Error message: " + errorMessage)
         }
         console.log(errorMessage)
         setTimeout(() => {
             setErrorMessage("")
-        },4000)
+        },6000)
     }
 
     const handleRegister = async () => {
@@ -75,7 +76,7 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
             const data = response.data
 
             if(data && data.register && data.register.token){
-                localStorage.setItem("userToken", data.register.token)
+                sessionStorage.setItem("userToken", data.register.token)
                 navigate("/dashboard")
             }
 
@@ -100,7 +101,7 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
             const data = response.data
 
             if(data && data.login.token){
-                localStorage.setItem("userToken", data.login.token)
+                sessionStorage.setItem("userToken", data.login.token)
 
                 console.log(`Login: Set token to ${data.login.token}`);
 
@@ -113,7 +114,7 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
 
             if(response.error){
                 console.log(response.error.message)
-                new Error (response.error.message)
+                throw new Error (response.error.message)
             }
 
             if(loginLoading){
@@ -122,6 +123,7 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
 
 
         } catch(e) {
+            console.log("Catching...")
             if(e instanceof Error) catchError(e);
         }
     }
@@ -156,7 +158,7 @@ export const UserAuthPage = ({type}: UserAuthPageProps) => {
                         }
                         />
                         </div>
-                        <div className={"flex mt-2 items-center text-center text-red-500 text-sm"}>{errorMessage}</div>
+                        <div className={"flex mt-2 items-center text-center text-red-500 text-xs"}>{errorMessage}</div>
                         {type === "login" ?
                             <span className={"flex sign-in-gradient bg-clip-text dark:text-white text-xs mt-4 mb-5 select-none"}>Don't have an account yet?
                         <Link to="/register"

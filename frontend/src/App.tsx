@@ -7,11 +7,12 @@ import {UserAuthPage} from "./pages/user-auth/UserAuthPage";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {NotFound} from "./pages/404/NotFound";
 import {Dashboard} from "./pages/dashboard/Dashboard";
+import {NextUIProvider} from "@nextui-org/react";
 import Cookies from 'js-cookie';
 
 
 const handleAuthorization = setContext((_, { headers }) => {
-    const token = localStorage.getItem("userToken")
+    const token = sessionStorage.getItem("userToken")
 
     // Check if token exists (optional)
     if (!token) {
@@ -93,13 +94,17 @@ function App() {
         uri: "http://localhost:4000/graphql",
     });
   return (
+      <NextUIProvider>
       <ApolloProvider client={client}>
+
           <DarkModeContext.Provider value={{ isDark, toggleDarkMode }}>
           <div className="App">
               <RouterProvider router={router}/>
           </div>
           </DarkModeContext.Provider>
+
       </ApolloProvider>
+      </NextUIProvider>
   );
 }
 

@@ -1,16 +1,14 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useLayoutEffect, useState} from "react";
 import './dashboard.css'
 import RuneLogoWhite from '../../assets/Rune_Logo_white.png'
 import RuneLogoBlack from '../../assets/Rune_Logo_black.png'
-import Cookies, {set} from "js-cookie";
 import {NavBarItems} from "./components/navbar/NavBarItems";
 import {SearchBar} from "./components/search/SearchBar";
 import {CardGrid} from "./components/card-grid/CardGrid";
 import {DarkModeToggle} from "../../general-components/DarkModeToggle";
 import {DarkModeContext} from "../../App";
-import {UserAvatar} from "./components/user-avatar/UserAvatar";
+import {Avatar} from "@nextui-org/react";
 import {gql, useLazyQuery, useQuery} from "@apollo/client";
-import {setContext} from "@apollo/client/link/context";
 import {useNavigate} from "react-router-dom";
 
 
@@ -32,9 +30,14 @@ export const Dashboard = () => {
     >(USER_INFO_QUERY);
 
     const [username, setUsername] = useState<string>("")
-
-    useEffect(() => {
-            getName().then(() => console.log("Username fetched"))
+    const [usernameLoading, setUsernameLoading] = useState<boolean>(true)
+    const [userProfilePicture, setUserProfilePicture] = useState<string>("")
+    const [userProfilePictureLoading, setUserProfilePictureLoading] = useState<boolean>(true)
+    useLayoutEffect(() => {
+        getName().then(() => setUsernameLoading(false))
+        getProfilePicture().then(() => {
+            setUserProfilePictureLoading(false)
+        })
     }, []);
 
     async function getName(){
@@ -47,7 +50,23 @@ export const Dashboard = () => {
             return "Error fetching username"
         }
         if(response && response.data){
+            console.log("setting name...")
+            console.log(response.data.user.name)
            setUsername(response.data.user.name)
+        }
+    }
+
+    async function getProfilePicture(){
+        const response = await getInfo();
+        if(loading){
+            console.log("Loading...")
+        }
+        if(error){
+            console.log(error)
+            return "Error fetching profile picture"
+        }
+        if(response && response.data){
+            setUserProfilePicture("")
         }
     }
 
@@ -57,8 +76,9 @@ export const Dashboard = () => {
     const navigate = useNavigate();
     return (
         <>
-            {!username && navigate("/login")}
-            { username && <div
+            {!username && usernameLoading && <div className={"flex flex-row h-screen w-screen justify-center items-center align-middle page-background dark:page-background"}></div>}
+            {!username && !usernameLoading && navigate("/login")}
+            {!usernameLoading && username &&  <div
                 className={"flex flex-row h-screen w-screen justify-center items-center align-middle page-background dark:page-background"}>
                 <div id={"black-box"}
                      className={"shadow-md shadow-black flex flex-row justify-between rounded-2xl bg-white dark:bg-black w-11/12 h-5/6"}>
@@ -73,13 +93,17 @@ export const Dashboard = () => {
                                 <div className={"flex mt-36 ml-5"}>
                                 <DarkModeToggle/>
                                     <div className={"mb-5"}>
-                                    <UserAvatar username={"m0lly"}/>
+                                        <Avatar showFallback name={username} size={"md"} getInitials={
+                                            (name) => {
+                                                return name[0]
+                                            }
+                                        } className={"bg-black ml-32 text-white hover:cursor-pointer dark:bg-gray-400 dark:text-black capitalize rounded-3xl"}/>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
-                        <div className={"ml-32 opacity-30 border border-black dark:border-white h-full"}></div>
+                        <div className={"ml-10 opacity-30 border border-black dark:border-white h-full"}></div>
                     </div>
                     <div className={"flex flex-col justify-between items-between  w-full"}>
                         <div className={"flex justify-between h-10 mt-5 mr-5"}>
