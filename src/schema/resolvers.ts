@@ -2,10 +2,14 @@ import {MockDB} from "../mock/db/mockdb";
 import {MockAuthenticator} from "../auth/mock/mockauth";
 import {CustomError} from "../errors/http";
 import {PgpClient} from "../lib/client/pgp-client";
+import {PubSub} from "graphql-subscriptions"
 
 const db = new MockDB();
 const auth = new MockAuthenticator();
 const pgpClient = new PgpClient();
+
+
+export const pubsub = new PubSub();
 
 function checkIsAuth(isAuth: Boolean){
     if(!isAuth){
@@ -51,6 +55,7 @@ export const resolvers = {
             const userToken = bearerToken.split(" ")[1];
             const isAuth = await auth.authenticate(userToken,sender_id);
             checkIsAuth(isAuth);
+            await pubsub.publish("messages", {userID: recipient_id});
             return await db.sendMessage(recipient_id, sender_id, text);
         },
         async storePublicKey(_: any, {publicKey}: any,context:any){
@@ -67,6 +72,13 @@ export const resolvers = {
             const userToken = bearerToken.split(" ")[1];
             const id = await auth.getIDFromToken(userToken);
             return await db.storePassword(id, label, hashed_value);
+        }
+    },
+    Subscription: {
+        messages: {
+            subscribe: (_: any, {userID}: any, context: any) => {
+                return pubsub.asyncIterator('messages');
+            }
         }
     }
 }

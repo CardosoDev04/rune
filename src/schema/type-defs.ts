@@ -38,6 +38,11 @@ export const typeDefs = gql`
         publicKey(id: ID!): PublicKey!
     }
 
+    type Subscription {
+        messages(userID: ID!): [Message!]!
+    }
+
+
     type Mutation {
         register(name: String!, password: String!): Token!
         sendMessage(recipient_id: ID!, sender_id: ID!, text: String!): String!
